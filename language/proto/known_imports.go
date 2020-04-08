@@ -21,6 +21,7 @@ var knownImports = map[string]label.Label{
 	"google/protobuf/wrappers.proto":                                                                   label.New("com_google_protobuf", "", "wrappers_proto"),
 	"google/actions/type/date_range.proto":                                                             label.New("go_googleapis", "google/actions/type", "date_range_proto"),
 	"google/actions/type/datetime_range.proto":                                                         label.New("go_googleapis", "google/actions/type", "date_time_range_proto"),
+	"gogoproto/gogo.proto":                                                                             label.New("com_github_gogo_protobuf", "gogoproto", "gogo_proto"),
 	"google/ads/admob/v1/admob_api.proto":                                                              label.New("go_googleapis", "google/ads/admob/v1", "admob_proto"),
 	"google/ads/admob/v1/admob_resources.proto":                                                        label.New("go_googleapis", "google/ads/admob/v1", "admob_proto"),
 	"google/ads/googleads/v1/common/ad_asset.proto":                                                    label.New("go_googleapis", "google/ads/googleads/v1/common", "common_proto"),

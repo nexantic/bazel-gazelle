@@ -64,6 +64,7 @@ google/protobuf/struct.proto,@com_google_protobuf//:struct_proto,github.com/gola
 google/protobuf/timestamp.proto,@com_google_protobuf//:timestamp_proto,github.com/golang/protobuf/ptypes/timestamp,@io_bazel_rules_go//proto/wkt:timestamp_go_proto
 google/protobuf/type.proto,@com_google_protobuf//:type_proto,google.golang.org/genproto/protobuf/ptype,@io_bazel_rules_go//proto/wkt:type_go_proto
 google/protobuf/wrappers.proto,@com_google_protobuf//:wrappers_proto,github.com/golang/protobuf/ptypes/wrappers,@io_bazel_rules_go//proto/wkt:wrappers_go_proto
+gogoproto/gogo.proto,@com_github_gogo_protobuf//gogoproto:gogo_proto,github.com/gogo/protobuf/gogoproto,@com_github_gogo_protobuf//gogoproto:gogo_go_proto
 `
 
 func main() {

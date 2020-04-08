@@ -21,6 +21,7 @@ var knownGoProtoImports = map[string]label.Label{
 	"github.com/golang/protobuf/ptypes/wrappers":                                             label.New("io_bazel_rules_go", "proto/wkt", "wrappers_go_proto"),
 	"google.golang.org/genproto/googleapis/type/date_range":                                  label.New("go_googleapis", "google/actions/type", "date_range_go_proto"),
 	"google.golang.org/genproto/googleapis/type/date_time_range":                             label.New("go_googleapis", "google/actions/type", "date_time_range_go_proto"),
+	"github.com/gogo/protobuf/gogoproto":                                                     label.New("com_github_gogo_protobuf", "gogoproto", "gogo_go_proto"),
 	"google.golang.org/genproto/googleapis/ads/admob/v1":                                     label.New("go_googleapis", "google/ads/admob/v1", "admob_go_proto"),
 	"google.golang.org/genproto/googleapis/ads/googleads/v1/common":                          label.New("go_googleapis", "google/ads/googleads/v1/common", "common_go_proto"),
 	"google.golang.org/genproto/googleapis/ads/googleads/v1/enums":                           label.New("go_googleapis", "google/ads/googleads/v1/enums", "enums_go_proto"),
