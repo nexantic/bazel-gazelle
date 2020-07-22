@@ -114,6 +114,7 @@ def _go_repository_impl(ctx):
         # attribute of go_repository, so we don't need to look it up.
         fetch_repo_env = dict(env)
         fetch_repo_env["GOSUMDB"] = "off"
+
         # Override external GO111MODULE, because it is needed by module mode, no-op in repository mode
         fetch_repo_env["GO111MODULE"] = "on"
 
@@ -128,6 +129,8 @@ def _go_repository_impl(ctx):
             fail("failed to fetch %s: %s" % (ctx.name, result.stderr))
         if result.stderr:
             print("fetch_repo: " + result.stderr)
+
+    patch(ctx, True)
 
     # Repositories are fetched. Determine if build file generation is needed.
     build_file_names = ctx.attr.build_file_name.split(",")
@@ -162,7 +165,7 @@ def _go_repository_impl(ctx):
             "-repo_root",
             ctx.path(""),
             "-repo_config",
-            ctx.path(ctx.attr.build_config)
+            ctx.path(ctx.attr.build_config),
         ]
         if ctx.attr.version:
             cmd.append("-go_repository_module_mode")
@@ -249,8 +252,12 @@ go_repository = repository_rule(
             ],
         ),
         "build_extra_args": attr.string_list(),
-        "build_config": attr.label(default= "@bazel_gazelle_go_repository_config//:WORKSPACE"),
+        "build_config": attr.label(default = "@bazel_gazelle_go_repository_config//:WORKSPACE"),
         "build_directives": attr.string_list(default = []),
+
+        # Patches to apply before running gazelle.
+        "pre_patches": attr.label_list(),
+        "pre_patch_cmds": attr.string_list(default = []),
 
         # Patches to apply after running gazelle.
         "patches": attr.label_list(),
@@ -262,10 +269,11 @@ go_repository = repository_rule(
 """See repository.rst#go-repository for full documentation."""
 
 # Copied from @bazel_tools//tools/build_defs/repo:utils.bzl
-def patch(ctx):
+def patch(ctx, pre_mode = False):
     """Implementation of patching an already extracted repository"""
     bash_exe = ctx.os.environ["BAZEL_SH"] if "BAZEL_SH" in ctx.os.environ else "bash"
-    for patchfile in ctx.attr.patches:
+    patches = ctx.attr.patches if not pre_mode else ctx.attr.pre_patches
+    for patchfile in patches:
         command = "{patchtool} {patch_args} < {patchfile}".format(
             patchtool = ctx.attr.patch_tool,
             patchfile = ctx.path(patchfile),
@@ -278,7 +286,8 @@ def patch(ctx):
         if st.return_code:
             fail("Error applying patch %s:\n%s%s" %
                  (str(patchfile), st.stderr, st.stdout))
-    for cmd in ctx.attr.patch_cmds:
+    patch_cmds = ctx.attr.patch_cmds if not pre_mode else ctx.attr.pre_patch_cmds
+    for cmd in patch_cmds:
         st = ctx.execute([bash_exe, "-c", cmd])
         if st.return_code:
             fail("Error applying patch command %s:\n%s%s" %
